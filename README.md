@@ -27,3 +27,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 "# kakeiboapp" 
 "# kakeibo-app" 
 "# kakeibo-app" 
+"# 20252Q-rintarotsuka-Front" 
