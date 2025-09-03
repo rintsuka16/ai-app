@@ -9,7 +9,7 @@
 
     <v-row class="mt-4">
 
-      <v-btn text to="/" tag="router-link">すべて</v-btn>
+      <v-btn text to="/" tag="router-link">チャット</v-btn>
 
       <v-btn text to="/%E5%8F%8E%E5%85%A5" tag="router-link">収入</v-btn>
       <v-btn text to="/%E6%94%AF%E5%87%BA" tag="router-link">支出</v-btn>

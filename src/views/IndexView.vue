@@ -1,18 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <!-- CDN読み込み -->
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.15/dist/vuetify.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.15/dist/vuetify.js"></script>
-</head>
-<body>
-  <div id="app">
-    <v-app>
+<template>
       <v-container>
+            <v-btn text to="/%E5%8F%8E%E5%85%A5%E5%85%A5%E5%8A%9B" tag="router-link">家計簿に追加する</v-btn>
+      <v-btn text to="/%E5%8F%8E%E5%85%A5" tag="router-link">一覧を表示する</v-btn>
+
         <!-- タイトル -->
         <v-row class="text-h4 mb-4" justify="center">ログイン</v-row>
 
@@ -54,20 +44,22 @@
           </v-card>
         </v-dialog>
       </v-container>
-    </v-app>
-  </div>
-
+</template>
   <script>
-    new Vue({
-      el: '#app',
-      vuetify: new Vuetify(),
-      data: {
+  import axios from "axios";
+
+    export default {
+    name: 'IndexView',
+
+    data() {
+      return {
         userid: '',
         password: '',
         errorMessage: '',
         dialog: false
-      },
-      methods: {
+      };
+    },
+    methods: {
         // ログイン処理（セッション処理なし）
         login: async function () {
           if (!this.userid || !this.password) {
@@ -100,9 +92,7 @@
         // サインアップページへ遷移
         goToSignup() {
           window.location.href = "signup.html";
-        }
-      }
-    });
+        }    }
+
+    };
   </script>
-</body>
-</html>
