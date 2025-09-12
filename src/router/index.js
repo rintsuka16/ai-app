@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import AIView from '../views/AIView.vue'
+import SignupView from '../views/SignupView.vue'
 
 Vue.use(VueRouter)
 
@@ -8,23 +9,26 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: AIView
+        component: () => import(/* webpackChunkName: "about" */ '../views/IndexView.vue')
+
   },
   {
-    path: '/index',
-    name: '/index',
+    path: '/aiview',
+    name: '/aiview',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/IndexView.vue')
+        component: AIView
+
   },
   {
-    path: '/inout',
-    name: 'inout',
+    path: '/signupview',
+    name: '/signupview',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/CompView.vue')
+        component: SignupView
+
   },
   {
     path: '/%E5%8F%8E%E5%85%A5',

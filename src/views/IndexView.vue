@@ -1,98 +1,109 @@
 <template>
-      <v-container>
-            <v-btn text to="/%E5%8F%8E%E5%85%A5%E5%85%A5%E5%8A%9B" tag="router-link">家計簿に追加する</v-btn>
-      <v-btn text to="/%E5%8F%8E%E5%85%A5" tag="router-link">一覧を表示する</v-btn>
+  <div class="login-wrapper">
+    <div class="login-card">
+      <!-- タイトル -->
+      <div class="login-title">ログイン</div>
 
-        <!-- タイトル -->
-        <v-row class="text-h4 mb-4" justify="center">ログイン</v-row>
+      <!-- 入力フォーム -->
+      <v-text-field v-model="userid" label="ユーザーID" outlined />
+      <v-text-field v-model="password" label="パスワード" type="password" outlined />
 
-        <!-- 入力フォーム -->
-        <v-row justify="center">
-          <v-col cols="12" sm="6" md="4">
-            <!-- ユーザー名入力欄 -->
-            <v-text-field 
-              v-model="userid" 
-              label="ユーザーID" 
-              outlined>
-            </v-text-field>
+      <!-- ログインボタン -->
+      <v-btn color="black" dark block class="mt-4" @click="login">続きから</v-btn>
 
-            <!-- パスワード入力欄 -->
-            <v-text-field 
-              v-model="password" 
-              label="パスワード" 
-              type="password" 
-              outlined>
-            </v-text-field>
+      <!-- サインアップボタン -->
+      <v-btn text to="/signupview" block class="mt-4" tag="router-link">ニューゲーム</v-btn>
 
-            <!-- ログインボタン -->
-            <v-btn color="primary" class="mt-4" block @click="login">ログイン</v-btn>
-
-            <!-- サインアップボタン -->
-            <v-btn text class="mt-2" block @click="goToSignup">新規登録はこちら</v-btn>
-          </v-col>
-        </v-row>
-
-        <!-- エラーダイアログ -->
-        <v-dialog v-model="dialog" max-width="400">
-          <v-card>
-            <v-card-title class="headline">エラー</v-card-title>
-            <v-card-text>{{ errorMessage }}</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="dialog = false">閉じる</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-container>
+      <!-- エラーダイアログ -->
+      <v-dialog v-model="dialog" max-width="400">
+        <v-card>
+          <v-card-title class="headline">エラー</v-card-title>
+          <v-card-text>{{ errorMessage }}</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" text @click="dialog = false">閉じる</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </div>
+  </div>
 </template>
-  <script>
-  import axios from "axios";
 
-    export default {
-    name: 'IndexView',
+<script>
+import axios from "axios";
 
-    data() {
-      return {
-        userid: '',
-        password: '',
-        errorMessage: '',
-        dialog: false
-      };
-    },
-    methods: {
-        // ログイン処理（セッション処理なし）
-        login: async function () {
-          if (!this.userid || !this.password) {
-            this.errorMessage = "ユーザーIDとパスワードを入力してください。";
-            this.dialog = true;
-            return;
-          }
-
-          try {
-            const response = await axios.post('※ここにLOGONAPIのURLを記載※', {
-              ID: this.userid,
-              Password: this.password
-            });
-
-            console.log("レスポンス:", response.data);
-
-            if (response.status === 200 && response.data?.result === "Succeeded") {
-              // ログインに成功した場合はhome.htmlに画面遷移
-              window.location.href = "home.html";
-            } else {
-              this.errorMessage = response.data?.Message || "ログインに失敗しました。";
-              this.dialog = true;
-            }
-          } catch (err) {
-            console.error("ログインエラー:", err);
-            this.errorMessage = "ログインエラー：" + (err.response?.data || err.message);
-            this.dialog = true;
-          }
-        },
-        // サインアップページへ遷移
-        goToSignup() {
-          window.location.href = "signup.html";
-        }    }
-
+export default {
+  name: "IndexView",
+  data() {
+    return {
+      userid: "",
+      password: "",
+      errorMessage: "",
+      dialog: false
     };
-  </script>
+  },
+  methods: {
+async login() {
+  try {
+    const response = await axios.post(
+      "https://m3h-rintarootsuka-0730.azurewebsites.net/api/LOGIN",
+      {
+        ID: this.userid,
+        Password: this.password
+      }
+    );
+      console.log(response.data.result);
+
+    if (response.data.result === "Succeeded") {
+      console.log("aaa");
+      // Vuex に UserId を保存
+      this.$store.commit("player/setUserId", this.userid);
+
+      // プレイヤーデータをロード
+      await this.$store.dispatch("player/loadPlayer");
+
+      // チャット画面へ遷移
+      this.$router.push("/aiview");
+    } else {
+      this.errorMessage = response.data.Message || "ログインに失敗しました。";
+      this.dialog = true;
+    }
+  } catch (err) {
+    console.error("ログインエラー:", err);
+    this.errorMessage = "ログインエラー：" + (err.response?.data || err.message);
+    this.dialog = true;
+  }
+}
+  }
+};
+</script>
+
+<style scoped>
+/* 黒背景に中央寄せ */
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 64px); /* AppBar分を除外 */
+}
+
+/* 白いカード風コンテナ */
+.login-card {
+  background-color: #fff;
+  color: #333;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 420px;
+}
+
+/* タイトル */
+.login-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #165e83;
+}
+</style>
