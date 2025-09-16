@@ -67,7 +67,6 @@ async signup() {
   }
 
   try {
-    // Users に登録
     const response = await axios.post(
       "https://m3h-rintarootsuka-0730.azurewebsites.net/api/INSERTUSER",
       {
@@ -80,11 +79,10 @@ async signup() {
     console.log(response);
 
     if (response.data === "登録結果:1件のユーザー情報を登録しました。") {
-      // PlayerData に初期データを登録
       const response2 = await axios.post(
         "https://m3h-rintarootsuka-0730.azurewebsites.net/api/INSERTPLAYER",
         {
-          UserId: this.userid   // ← 修正ポイント
+          UserId: this.userid
         }
       );
       this.message = response2.data;

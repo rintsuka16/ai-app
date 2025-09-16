@@ -14,45 +14,6 @@
     <v-app>
       <v-container>
         <!-- タイトル -->
-        <v-row class="text-h4 mb-4" justify="center">ログイン</v-row>
-
-        <!-- 入力フォーム -->
-        <v-row justify="center">
-          <v-col cols="12" sm="6" md="4">
-            <!-- ユーザー名入力欄 -->
-            <v-text-field 
-              v-model="userid" 
-              label="ユーザーID" 
-              outlined>
-            </v-text-field>
-
-            <!-- パスワード入力欄 -->
-            <v-text-field 
-              v-model="password" 
-              label="パスワード" 
-              type="password" 
-              outlined>
-            </v-text-field>
-
-            <!-- ログインボタン -->
-            <v-btn color="primary" class="mt-4" block @click="login">ログイン</v-btn>
-
-            <!-- サインアップボタン -->
-            <v-btn text class="mt-2" block @click="goToSignup">新規登録はこちら</v-btn>
-          </v-col>
-        </v-row>
-
-        <!-- エラーダイアログ -->
-        <v-dialog v-model="dialog" max-width="400">
-          <v-card>
-            <v-card-title class="headline">エラー</v-card-title>
-            <v-card-text>{{ errorMessage }}</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="dialog = false">閉じる</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-container>
     </v-app>
   </div>

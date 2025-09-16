@@ -4,8 +4,8 @@ export default {
   namespaced: true,
 
   state: {
-    userId: "でふぉ",
-    charId: "でふぉ",
+    userId: "ログインしてください",
+    charId: 0,
     exp: 0,
     parameter1: 0,
     parameter2: 0,
@@ -47,6 +47,7 @@ export default {
     state.parameter3 = item.parameter3;
     state.currentEventId = item.currentEventId;
     state.currentSeq = item.currentSeq;
+    console.log(state);
   },
       setUserId(state, userId) {
       state.userId = userId;

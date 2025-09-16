@@ -1,6 +1,5 @@
 <template>
-  <div class="game-wrapper">
-
+  <v-container>
     <div class="status-wrapper">
       <table class="table">
         <tr>
@@ -25,57 +24,25 @@
         </tr>
       </table>
     </div>
-
-    <v-container class="pb-16 px-4 pt-4">
-      <div class="dialog">
-        <div class="speaker">
-          <v-container>{{ currentLine ? currentLine.speaker : '' }}</v-container>
-        </div>
-        <v-container style="color:white" @click="nextLine">
-          <div id="ityped"></div>
-          <div v-if="statMessage" class="stat-message">
-            {{ statMessage }}
-          </div>
-        </v-container>
-      </div>
-
-      <div class="character" style="opacity:0">
-        <img :src="currentImage" />
-      </div>
-
-      <div v-for="(m, i) in messages" :key="i" class="mb-2 mt-2 d-flex" :class="{'justify-end': m.role==='user', 'justify-start': m.role!=='user'}">
-        <v-sheet v-if="m.role==='user' || m.role==='bot'" :class="[m.role === 'user' ? 'indigo lighten-5' : 'grey lighten-3', 'pa-3', 'rounded-lg']" elevation="1" max-width="60%">
-          <div class="text-pre-line">{{ m.text }}</div>
-        </v-sheet>
-      </div>
-    </v-container>
-
-    <div class="bottom-space">余白</div>
-
-    <div class="chat-input-bar">
-      <v-container class="pa-3">
-        <v-row no-gutters>
-          <v-col cols="10">
-            <v-textarea v-model="message" placeholder="メッセージを入力..." auto-grow rows="1" outlined hide-details rounded></v-textarea>
-          </v-col>
-          <v-col cols="2" class="pl-2">
-            <v-btn block class="mt-2" @click="sendMessage" :disabled="lastLine || typing">
-              送信
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-
-  </div>
+  </v-container>
 </template>
 
 <script>
+  import DataList from '@/components/DataList.vue' //KakeiboList.vueをインポート
   import axios from "axios";
   import {
     init
   } from "ityped";
+
   export default {
+        name: 'DataView',
+
+
+    components: {
+      DataList,
+    },
+
+
     name: "AIView",
     data() {
       return {
@@ -83,15 +50,6 @@
         messages: [],
         typing: false,
         statMessage: "",
-        imageURL: 0,
-        imageList: [
-          "https://i.gyazo.com/98ada2c0b6aebb3e448b68c0fe85116c.png",
-          "https://i.gyazo.com/9e8ddea5620600ece10d9e02c27ba4ba.png",
-          "https://i.gyazo.com/4cc6325713e327f87be71e61dfe9e2e5.png",
-          "https://i.gyazo.com/f060e5b78f97c2d511eeda761170f5d6.png",
-          "https://i.gyazo.com/2928c506f7c613c70d32eb1d8469fd1a.png",
-          "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
-        ]
       };
     },
     computed: {
@@ -220,112 +178,3 @@ async sendMessage() {
     }
   };
 </script>
-
-<style>
-  .stat-message {
-    margin-top: 10px;
-    color: yellow;
-    font-weight: bold;
-    white-space: pre-line;
-  }
-
-  body {
-    height: 100%;
-    margin: 0;
-  }
-
-  #app {
-    height: 100%;
-    background-color: black;
-  }
-
-  .game-wrapper {
-    position: relative;
-    background-color: black;
-    margin: 0 10%;
-    width: 80%;
-    height: 50%;
-    padding: 20px 20px 0 20px;
-    margin-bottom: 100px;
-    background-image: url('https://i.gyazo.com/885cc2c4ae29f74b1390a750087a0967.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: top;
-    font-family: sans-serif;
-  }
-
-  .bottom-space {
-    background-color: white;
-    text-align: center;
-    position: absolute;
-    bottom: 0px;
-    color: black;
-    padding-top: 75px;
-    height: 190px;
-    width: 100%;
-    opacity: 0
-  }
-
-  .character {
-    opacity: 1;
-    position: absolute;
-    bottom: 25%;
-  }
-
-  .character img {
-    transition: opacity 0.3s ease-in-out;
-    opacity: 1;
-    margin-left: 35%;
-    width: 50%;
-    height: auto;
-  }
-
-  .dialog {
-    position: fixed;
-    bottom: 84px;
-    left: 10%;
-    height: 20%;
-    width: 80%;
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    border: solid white;
-    background-color: black;
-  }
-
-  .speaker {
-    border-bottom: solid white;
-    color: white;
-  }
-
-  .chat-input-bar {
-    background-color: white;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
-
-  .status-wrapper {
-    font-size: 12px;
-    float: right;
-    width: 200px;
-    margin-bottom: 10px;
-    opacity: 1;
-  }
-
-  .table {
-    background-color: black;
-    color: white;
-    border: solid 3px white;
-    border-radius: 5px;
-  }
-
-  .table td,
-  .table th {
-    margin: 10px;
-    width: 20%;
-    padding: 5px;
-  }
-</style>
