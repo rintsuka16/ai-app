@@ -5,14 +5,14 @@
       <div class="login-title">ログイン</div>
 
       <!-- 入力フォーム -->
-      <v-text-field v-model="userid" label="ユーザーID" outlined />
-      <v-text-field v-model="password" label="パスワード" type="password" outlined />
+      <v-text-field dark v-model="userid" label="ユーザーID" outlined />
+      <v-text-field dark v-model="password" label="パスワード" type="password" outlined />
 
       <!-- ログインボタン -->
-      <v-btn color="black" dark block class="mt-4" @click="login">続きから</v-btn>
+      <v-btn color="white" light block class="mt-4" @click="login">続きから</v-btn>
 
       <!-- サインアップボタン -->
-      <v-btn text to="/signupview" block class="mt-4" tag="router-link">ニューゲーム</v-btn>
+      <v-btn color="white" style="border:solid white" text to="/signupview" block class="mt-4" tag="router-link">ニューゲーム</v-btn>
 
       <!-- エラーダイアログ -->
       <v-dialog v-model="dialog" max-width="400">
@@ -79,31 +79,30 @@ async login() {
 </script>
 
 <style scoped>
-/* 黒背景に中央寄せ */
 .login-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 64px); /* AppBar分を除外 */
+  min-height: calc(100vh - 64px);
 }
 
 /* 白いカード風コンテナ */
 .login-card {
-  background-color: #fff;
+  background-color: black;
+  border: white solid;
   color: #333;
   padding: 32px;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 420px;
 }
 
-/* タイトル */
 .login-title {
   font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
   margin-bottom: 24px;
-  color: #165e83;
+  color: white;
 }
 </style>

@@ -79,10 +79,11 @@
     name: "AIView",
     data() {
       return {
-        message: "",
-        messages: [],
-        typing: false,
-        statMessage: "",
+    message: "",
+    messages: [],
+    typing: false,
+    statMessage: "",
+    pendingStatMessage: [], 
         imageURL: 0,
         imageList: [
           "https://i.gyazo.com/98ada2c0b6aebb3e448b68c0fe85116c.png",
@@ -132,11 +133,12 @@
         });
       },
 async nextLine() {
-  if (this.pendingStatMessage && this.pendingStatMessage.length > 0) {
-    this.statMessage = this.pendingStatMessage.join("\n");
-    this.pendingStatMessage = null; 
+  if (this.pendingStatMessages && this.pendingStatMessages.length > 0) {
+    this.statMessage = this.pendingStatMessages.shift(); // 先頭を1つ取り出す
+    return; 
   }
 
+  // 通常のイベント進行
   if (this.lastLine) {
     this.$store.commit("player/nextLine");
     this.$nextTick(this.startTyping);
@@ -147,11 +149,13 @@ async nextLine() {
     this.$nextTick(this.startTyping);
     this.statMessage = "";
   }
-},
+}
+,
 async sendMessage() {
   const trimmed = (this.message || "").trim();
   if (!trimmed) return;
 
+  // 入力をセリフ欄に表示
   const textBox = document.querySelector("#ityped");
   if (textBox) {
     textBox.innerHTML = "";
@@ -162,9 +166,7 @@ async sendMessage() {
       backSpeed: 50,
       loop: false,
       showCursor: false,
-      onFinished: () => {
-        this.typing = false;
-      }
+      onFinished: () => { this.typing = false; }
     });
   }
 
@@ -173,8 +175,7 @@ async sendMessage() {
       "https://m3h-rintarootsuka-0730.azurewebsites.net/api/OpenAI?",
       { message: trimmed }
     );
-    const contentText = resp.data.Content[0].Text;
-    const parsed = JSON.parse(contentText);
+    const parsed = JSON.parse(resp.data.Content[0].Text);
 
     const before = {
       p1: this.player.parameter1,
@@ -189,24 +190,22 @@ async sendMessage() {
       p3: Number(parsed.Empathy) || 0
     });
 
-    this.pendingStatMessage = [];
-    const diff1 = this.player.parameter1 - before.p1;
-    const diff2 = this.player.parameter2 - before.p2;
-    const diff3 = this.player.parameter3 - before.p3;
-    const diffExp = this.player.exp - before.exp;
+    let statLines = [];
+    if (this.player.parameter1 - before.p1) statLines.push(`ちからが ${this.player.parameter1 - before.p1} 上がった！`);
+    if (this.player.parameter2 - before.p2) statLines.push(`まもりが ${this.player.parameter2 - before.p2} 上がった！`);
+    if (this.player.parameter3 - before.p3) statLines.push(`すばやさが ${this.player.parameter3 - before.p3} 上がった！`);
+    if (this.player.exp - before.exp) statLines.push(`けいけんちが ${this.player.exp - before.exp} 増えた！`);
 
-    if (diff1) this.pendingStatMessage.push(`ちからが ${diff1} 上がった！`);
-    if (diff2) this.pendingStatMessage.push(`まもりが ${diff2} 上がった！`);
-    if (diff3) this.pendingStatMessage.push(`すばやさが ${diff3} 上がった！`);
-    if (diffExp) this.pendingStatMessage.push(`けいけんちが ${diffExp} 増えた！`);
+    this.pendingStatMessages = statLines; // 配列として保持
 
   } catch (e) {
     console.error(e);
-    this.pendingStatMessage = ["評価に失敗しました。"];
+    this.pendingStatMessages = ["評価に失敗しました。"];
   }
 
   this.message = "";
 }
+
 
     },
     mounted: async function() {
@@ -223,11 +222,25 @@ async sendMessage() {
 
 <style>
   .stat-message {
+      font-family: 'MisakiGothic', monospace;
+
     margin-top: 10px;
     color: yellow;
     font-weight: bold;
     white-space: pre-line;
   }
+
+@font-face {
+  font-family: 'MisakiGothic';
+  src: url('@/assets/fonts/misaki_gothic_2nd.ttf') format('truetype');
+}
+
+#ityped {
+  font-family: 'MisakiGothic', monospace;
+  font-size: 20px;
+  line-height: 1.6;
+  color: white;
+}
 
   body {
     height: 100%;
@@ -235,6 +248,8 @@ async sendMessage() {
   }
 
   #app {
+      font-family: 'MisakiGothic', monospace;
+
     height: 100%;
     background-color: black;
   }
@@ -293,6 +308,8 @@ async sendMessage() {
   }
 
   .speaker {
+      font-family: 'MisakiGothic', monospace;
+
     border-bottom: solid white;
     color: white;
   }
@@ -308,6 +325,8 @@ async sendMessage() {
   }
 
   .status-wrapper {
+      font-family: 'MisakiGothic', monospace;
+
     font-size: 12px;
     float: right;
     width: 200px;
