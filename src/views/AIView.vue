@@ -50,7 +50,6 @@
       </div>
     </v-container>
 
-    <div class="bottom-space">余白</div>
 
     <div class="chat-input-bar">
       <v-container class="pa-3">
@@ -108,12 +107,12 @@
           "https://i.gyazo.com/3ff238758fb7cabf237a3640ae367669.png",
         ],
         charImages_30: [
-                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
-                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
-                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
-                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
-                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
-                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+          "https://i.gyazo.com/98ada2c0b6aebb3e448b68c0fe85116c.png",
+          "https://i.gyazo.com/9e8ddea5620600ece10d9e02c27ba4ba.png",
+          "https://i.gyazo.com/4cc6325713e327f87be71e61dfe9e2e5.png",
+          "https://i.gyazo.com/f060e5b78f97c2d511eeda761170f5d6.png",
+          "https://i.gyazo.com/2928c506f7c613c70d32eb1d8469fd1a.png",
+          "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
 
         ],
       };
@@ -252,6 +251,7 @@
 
 </script>
 
+
 <style>
   .stat-message {
     font-family: 'MisakiGothic', monospace;
@@ -284,46 +284,32 @@
     background-color: black;
   }
 
-  .game-wrapper {
-    position: relative;
-    background-color: black;
-    margin: 0 10%;
-    width: 80%;
-    height: 50%;
-    padding: 20px 20px 0 20px;
-    margin-bottom: 100px;
-    background-image: url('https://i.gyazo.com/885cc2c4ae29f74b1390a750087a0967.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: top;
-    font-family: sans-serif;
-  }
+.game-wrapper {
+  position: relative;
+  background-color: black;
+  margin: 0 auto;
+  width: 80%;
+  height: 60vh;
+  padding: 20px;
+  background-image: url('https://i.gyazo.com/885cc2c4ae29f74b1390a750087a0967.jpg');
+  background-repeat: repeat-x;
+  background-size: auto 100%; 
+  background-position: center top;
+  font-family: sans-serif;
+}
 
-  .bottom-space {
-    background-color: white;
-    text-align: center;
-    position: absolute;
-    bottom: 0px;
-    color: black;
-    padding-top: 75px;
-    height: 190px;
-    width: 100%;
-    opacity: 0
-  }
+.character {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  z-index: 10;
+}
 
-  .character {
-    opacity: 1;
-    position: absolute;
-    bottom: 25%;
-  }
-
-  .character img {
-    transition: opacity 0.3s ease-in-out;
-    opacity: 1;
-    margin-left: 35%;
-    width: 50%;
-    height: auto;
-  }
+.character img {
+  width: 300px;
+  height: auto;
+}
 
   .dialog {
     position: fixed;
@@ -331,9 +317,10 @@
     left: 10%;
     height: 20%;
     width: 80%;
-    box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -1px 4px black;
     z-index: 1000;
     border: solid white;
+    border-radius: 6px;
     background-color: black;
   }
 
