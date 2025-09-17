@@ -39,8 +39,8 @@
         </v-container>
       </div>
 
-      <div class="character" style="opacity:0">
-        <img :src="currentImage" />
+      <div class="character" style="opacity:1">
+        <img :src="currentCharImage" />
       </div>
 
       <div v-for="(m, i) in messages" :key="i" class="mb-2 mt-2 d-flex" :class="{'justify-end': m.role==='user', 'justify-start': m.role!=='user'}">
@@ -79,11 +79,11 @@
     name: "AIView",
     data() {
       return {
-    message: "",
-    messages: [],
-    typing: false,
-    statMessage: "",
-    pendingStatMessage: [], 
+        message: "",
+        messages: [],
+        typing: false,
+        statMessage: "",
+        pendingStatMessages: [],
         imageURL: 0,
         imageList: [
           "https://i.gyazo.com/98ada2c0b6aebb3e448b68c0fe85116c.png",
@@ -92,7 +92,30 @@
           "https://i.gyazo.com/f060e5b78f97c2d511eeda761170f5d6.png",
           "https://i.gyazo.com/2928c506f7c613c70d32eb1d8469fd1a.png",
           "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
-        ]
+        ],
+        charImages_0: [
+          "https://i.gyazo.com/98ada2c0b6aebb3e448b68c0fe85116c.png",
+          "https://i.gyazo.com/9e8ddea5620600ece10d9e02c27ba4ba.png",
+          "https://i.gyazo.com/4cc6325713e327f87be71e61dfe9e2e5.png",
+          "https://i.gyazo.com/f060e5b78f97c2d511eeda761170f5d6.png",
+          "https://i.gyazo.com/2928c506f7c613c70d32eb1d8469fd1a.png",
+          "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
+        ],
+        charImages_10: [
+          "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+        ],
+        charImages_20: [
+          "https://i.gyazo.com/3ff238758fb7cabf237a3640ae367669.png",
+        ],
+        charImages_30: [
+                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+                    "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+
+        ],
       };
     },
     computed: {
@@ -107,137 +130,148 @@
       },
       currentImage() {
         return this.imageList[this.imageURL];
-      }
-    },
-    methods: {
-      startTyping() {
-        const textBox = document.querySelector("#ityped");
-        if (!textBox || this.typing) return;
-        const text = this.currentLine ? this.currentLine.text : "";
-        textBox.innerHTML = "";
-        this.typing = true;
-        init(textBox, {
-          strings: [text],
-          typeSpeed: 25,
-          backSpeed: 50,
-          startDelay: 100,
-          backDelay: 500,
-          loop: false,
-          showCursor: false,
-          placeholder: false,
-          disableBackTyping: true,
-          cursorChar: "|",
-          onFinished: () => {
-            this.typing = false;
-          }
-        });
       },
-async nextLine() {
-  if (this.pendingStatMessages && this.pendingStatMessages.length > 0) {
-    this.statMessage = this.pendingStatMessages.shift(); 
-    return; 
+      charImageList() {
+        switch (this.player.charId) {
+          case 10:
+            return this.charImages_10;
+          case 20:
+            return this.charImages_20;
+          case 30:
+            return this.charImages_30;
+          case 0:
+          default:
+            return this.charImages_0;
+        }
+      },
+        currentCharImage() {
+    return this.charImageList[this.imageURL % 6];
   }
-  if (this.lastLine) {
-    this.$store.commit("player/nextLine");
-    this.$nextTick(this.startTyping);
-  } else {
-    const event = this.player.currentEventId + 1;
-    this.$store.commit("player/setProgress", { eventId: event, seq: 0 });
-    await this.$store.dispatch("player/loadEvent");
-    this.$nextTick(this.startTyping);
-    this.statMessage = "";
-  }
-}
-,
-async sendMessage() {
-  const trimmed = (this.message || "").trim();
-  if (!trimmed) return;
-
-  const textBox = document.querySelector("#ityped");
-  if (textBox) {
-    textBox.innerHTML = "";
-    this.typing = true;
-    init(textBox, {
-      strings: [trimmed],
-      typeSpeed: 25,
-      backSpeed: 50,
-      loop: false,
-      showCursor: false,
-      onFinished: () => { this.typing = false; }
-    });
-  }
-
-  try {
-    const resp = await axios.post(
-      "https://m3h-rintarootsuka-0730.azurewebsites.net/api/OpenAI?",
-      { message: trimmed }
-    );
-    const parsed = JSON.parse(resp.data.Content[0].Text);
-
-    const before = {
-      p1: this.player.parameter1,
-      p2: this.player.parameter2,
-      p3: this.player.parameter3,
-      exp: this.player.exp
+    },
+      methods: {
+        startTyping() {
+          const textBox = document.querySelector("#ityped");
+          if (!textBox || this.typing) return;
+          const text = this.currentLine ? this.currentLine.text : "";
+          textBox.innerHTML = "";
+          this.typing = true;
+          init(textBox, {
+            strings: [text],
+            typeSpeed: 25,
+            backSpeed: 50,
+            startDelay: 100,
+            backDelay: 500,
+            loop: false,
+            showCursor: false,
+            placeholder: false,
+            disableBackTyping: true,
+            cursorChar: "|",
+            onFinished: () => {
+              this.typing = false;
+            }
+          });
+        },
+        async nextLine() {
+          if (this.pendingStatMessages && this.pendingStatMessages.length > 0) {
+            this.statMessage = this.pendingStatMessages.shift();
+            return;
+          }
+          if (this.lastLine) {
+            this.$store.commit("player/nextLine");
+            this.$nextTick(this.startTyping);
+          } else {
+            const event = this.player.currentEventId + 1;
+            this.$store.commit("player/setProgress", {
+              eventId: event,
+              seq: 0
+            });
+            await this.$store.dispatch("player/loadEvent");
+            this.$nextTick(this.startTyping);
+            this.statMessage = "";
+          }
+        },
+        async sendMessage() {
+          const trimmed = (this.message || "").trim();
+          if (!trimmed) return;
+          const textBox = document.querySelector("#ityped");
+          if (textBox) {
+            textBox.innerHTML = "";
+            this.typing = true;
+            init(textBox, {
+              strings: [trimmed],
+              typeSpeed: 25,
+              backSpeed: 50,
+              loop: false,
+              showCursor: false,
+              onFinished: () => {
+                this.typing = false;
+              }
+            });
+          }
+          try {
+            const resp = await axios.post(
+              "https://m3h-rintarootsuka-0730.azurewebsites.net/api/OpenAI?", {
+                message: trimmed
+              }
+            );
+            const parsed = JSON.parse(resp.data.Content[0].Text);
+            const before = {
+              p1: this.player.parameter1,
+              p2: this.player.parameter2,
+              p3: this.player.parameter3,
+              exp: this.player.exp
+            };
+            this.$store.commit("player/addParams", {
+              p1: Number(parsed.Intelligence) || 0,
+              p2: Number(parsed.Vitality) || 0,
+              p3: Number(parsed.Empathy) || 0
+            });
+            let statLines = [];
+            if (this.player.parameter1 - before.p1) statLines.push(`ちからが ${this.player.parameter1 - before.p1} 上がった！`);
+            if (this.player.parameter2 - before.p2) statLines.push(`まもりが ${this.player.parameter2 - before.p2} 上がった！`);
+            if (this.player.parameter3 - before.p3) statLines.push(`すばやさが ${this.player.parameter3 - before.p3} 上がった！`);
+            if (this.player.exp - before.exp) statLines.push(`けいけんちが ${this.player.exp - before.exp} 増えた！`);
+            this.pendingStatMessages = statLines;
+          } catch (e) {
+            console.error(e);
+            this.pendingStatMessages = ["評価に失敗しました。"];
+          }
+          this.message = "";
+        }
+      },
+      mounted: async function() {
+        await this.$store.dispatch("player/loadPlayer");
+        await this.$store.dispatch("player/loadEvent");
+        this.startTyping();
+        const that = this;
+        setInterval(function() {
+          that.imageURL = (that.imageURL + 1) % 6;
+        }, 80);
+      }
     };
 
-    this.$store.commit("player/addParams", {
-      p1: Number(parsed.Intelligence) || 0,
-      p2: Number(parsed.Vitality) || 0,
-      p3: Number(parsed.Empathy) || 0
-    });
-
-    let statLines = [];
-    if (this.player.parameter1 - before.p1) statLines.push(`ちからが ${this.player.parameter1 - before.p1} 上がった！`);
-    if (this.player.parameter2 - before.p2) statLines.push(`まもりが ${this.player.parameter2 - before.p2} 上がった！`);
-    if (this.player.parameter3 - before.p3) statLines.push(`すばやさが ${this.player.parameter3 - before.p3} 上がった！`);
-    if (this.player.exp - before.exp) statLines.push(`けいけんちが ${this.player.exp - before.exp} 増えた！`);
-
-    this.pendingStatMessages = statLines; 
-
-  } catch (e) {
-    console.error(e);
-    this.pendingStatMessages = ["評価に失敗しました。"];
-  }
-
-  this.message = "";
-}
-
-
-    },
-    mounted: async function() {
-      await this.$store.dispatch("player/loadPlayer");
-      await this.$store.dispatch("player/loadEvent");
-      this.startTyping();
-      const self = this;
-      setInterval(function() {
-        self.imageURL = (self.imageURL + 1) % self.imageList.length;
-      }, 80);
-    }
-  };
 </script>
 
 <style>
   .stat-message {
-      font-family: 'MisakiGothic', monospace;
-
+    font-family: 'MisakiGothic', monospace;
     margin-top: 10px;
     color: yellow;
     font-weight: bold;
     white-space: pre-line;
   }
 
-@font-face {
-  font-family: 'MisakiGothic';
-  src: url('@/assets/fonts/misaki_gothic_2nd.ttf') format('truetype');
-}
+  @font-face {
+    font-family: 'MisakiGothic';
+    src: url('@/assets/fonts/misaki_gothic_2nd.ttf') format('truetype');
+  }
 
-#ityped {
-  font-family: 'MisakiGothic', monospace;
-  font-size: 20px;
-  line-height: 1.6;
-  color: white;
-}
+  #ityped {
+    font-family: 'MisakiGothic', monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    color: white;
+  }
 
   body {
     height: 100%;
@@ -245,8 +279,7 @@ async sendMessage() {
   }
 
   #app {
-      font-family: 'MisakiGothic', monospace;
-
+    font-family: 'MisakiGothic', monospace;
     height: 100%;
     background-color: black;
   }
@@ -305,8 +338,7 @@ async sendMessage() {
   }
 
   .speaker {
-      font-family: 'MisakiGothic', monospace;
-
+    font-family: 'MisakiGothic', monospace;
     border-bottom: solid white;
     color: white;
   }
@@ -322,8 +354,7 @@ async sendMessage() {
   }
 
   .status-wrapper {
-      font-family: 'MisakiGothic', monospace;
-
+    font-family: 'MisakiGothic', monospace;
     font-size: 12px;
     float: right;
     width: 200px;

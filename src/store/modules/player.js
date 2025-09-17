@@ -4,7 +4,7 @@ export default {
   namespaced: true,
 
   state: {
-    userId: 0,
+    userId: "なまえ",
     charId: 0,
     exp: 0,
     parameter1: 0,
@@ -63,6 +63,16 @@ export default {
       const p1 = item.p1 || 0, p2 = item.p2 || 0, p3 = item.p3 || 0;
       state.parameter1 += p1; state.parameter2 += p2; state.parameter3 += p3;
       state.exp += p1 + p2 + p3;
+       if (state.exp >= 1000) {
+      let maxParam = Math.max(state.parameter1, state.parameter2, state.parameter3);
+      if (maxParam === state.parameter1) {
+        state.charId = 10; 
+      } else if (maxParam === state.parameter2) {
+        state.charId = 20; 
+      } else {
+        state.charId = 30; 
+      }
+    }
     },
     setProgress(state, item) {
       if (item.eventId !== undefined && item.eventId !== null) {
@@ -106,6 +116,10 @@ async loadPlayer({ state, commit }) {
         const eventLines = response.data.EventLines || [];
         const lines = [];
         for (let i = 0; i < eventLines.length; i++) {
+          if(eventLines[i].Speaker === "じぶん"){
+            eventLines[i].Speaker = state.userId
+          }
+
           lines.push({ speaker: eventLines[i].Speaker || "", text: eventLines[i].Text });
         }
         commit("setLines", lines);

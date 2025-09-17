@@ -1,21 +1,15 @@
 <template>
   <div class="signup-wrapper">
     <div class="signup-card">
-      <!-- タイトル -->
       <div class="signup-title">ユーザー登録</div>
 
-      <!-- 入力フォーム -->
       <v-text-field v-model="userid" label="ユーザーID" outlined />
       <v-text-field v-model="password" label="パスワード" type="password" outlined />
       <v-text-field v-model="displayName" label="表示名" outlined />
 
-      <!-- 登録ボタン -->
       <v-btn color="primary" class="mt-4" block @click="signup">登録</v-btn>
-
-      <!-- ログイン画面に戻る -->
       <v-btn text class="mt-2" block @click="goToLogin">ログインに戻る</v-btn>
 
-      <!-- エラーダイアログ -->
       <v-dialog v-model="dialog" max-width="400">
         <v-card>
           <v-card-title class="headline">エラー</v-card-title>
@@ -27,7 +21,6 @@
         </v-card>
       </v-dialog>
 
-      <!-- 成功ダイアログ -->
       <v-dialog v-model="successDialog" max-width="400">
         <v-card>
           <v-card-title class="headline">成功</v-card-title>
@@ -85,7 +78,7 @@ async signup() {
           UserId: this.userid
         }
       );
-      this.message = response2.data;
+      this.message = response2.data.result;
     } else {
       this.message = response.data;
     }
@@ -105,8 +98,7 @@ goToLogin() {
 };
 </script>
 
-<style scoped>
-/* 黒背景に合わせて中央配置 */
+<style>
 .signup-wrapper {
   display: flex;
   align-items: center;
@@ -114,7 +106,6 @@ goToLogin() {
   min-height: calc(100vh - 64px);
 }
 
-/* 白いカード風デザイン */
 .signup-card {
   background-color: #fff;
   color: #333;

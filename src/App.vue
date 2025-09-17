@@ -4,7 +4,7 @@
       <div class="d-flex align-center">
         <v-img alt="Logo" class="shrink mr-2" contain src="https://i.gyazo.com/12213166757a7551808fbd6fd409c97c.png" transition="scale-transition" width="108" />
       </div>
-      UserId: {{ userId }} Lv: {{ level }}
+      なまえ: {{ userId }} Lv: {{ level }}
 
       <v-spacer></v-spacer>
 
