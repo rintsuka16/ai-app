@@ -134,17 +134,15 @@
       },
 async nextLine() {
   if (this.pendingStatMessages && this.pendingStatMessages.length > 0) {
-    this.statMessage = this.pendingStatMessages.shift(); // 先頭を1つ取り出す
+    this.statMessage = this.pendingStatMessages.shift(); 
     return; 
   }
-
-  // 通常のイベント進行
   if (this.lastLine) {
     this.$store.commit("player/nextLine");
     this.$nextTick(this.startTyping);
   } else {
-    const ev = this.player.currentEventId + 1;
-    this.$store.commit("player/setProgress", { eventId: ev, seq: 0 });
+    const event = this.player.currentEventId + 1;
+    this.$store.commit("player/setProgress", { eventId: event, seq: 0 });
     await this.$store.dispatch("player/loadEvent");
     this.$nextTick(this.startTyping);
     this.statMessage = "";
@@ -155,7 +153,6 @@ async sendMessage() {
   const trimmed = (this.message || "").trim();
   if (!trimmed) return;
 
-  // 入力をセリフ欄に表示
   const textBox = document.querySelector("#ityped");
   if (textBox) {
     textBox.innerHTML = "";
@@ -196,7 +193,7 @@ async sendMessage() {
     if (this.player.parameter3 - before.p3) statLines.push(`すばやさが ${this.player.parameter3 - before.p3} 上がった！`);
     if (this.player.exp - before.exp) statLines.push(`けいけんちが ${this.player.exp - before.exp} 増えた！`);
 
-    this.pendingStatMessages = statLines; // 配列として保持
+    this.pendingStatMessages = statLines; 
 
   } catch (e) {
     console.error(e);

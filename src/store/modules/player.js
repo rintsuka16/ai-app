@@ -4,7 +4,7 @@ export default {
   namespaced: true,
 
   state: {
-    userId: "ログインしてください",
+    userId: 0,
     charId: 0,
     exp: 0,
     parameter1: 0,
