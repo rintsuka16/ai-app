@@ -239,9 +239,14 @@
         }
       },
       mounted: async function() {
+        try{
         await this.$store.dispatch("player/loadPlayer");
         await this.$store.dispatch("player/loadEvent");
         this.startTyping();
+
+        }catch(e){
+          this.$router.push("/");
+        }
         const that = this;
         setInterval(function() {
           that.imageURL = (that.imageURL + 1) % 6;

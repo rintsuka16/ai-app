@@ -11,7 +11,7 @@
       <v-btn text to="/" tag="router-link">ログイン</v-btn>
       <v-btn color="black" @click="saveData">セーブ</v-btn>
       <v-btn text to="/dataview" tag="router-link">データ</v-btn>
-      <v-btn @click="playBGM">Play</v-btn>
+      <v-btn @click="playBGM">bgm</v-btn>
       <audio ref="bgm" :src="bgmUrl" loop></audio>
     </v-app-bar>
 
@@ -50,10 +50,15 @@
       async playBGM() {
         const bgm = this.$refs.bgm;
         if (bgm) {
-          bgm.volume = 1;
           await bgm.play();
+          if (bgm.volume == 0 || bgm.volume == 1){
+            bgm.volume = 0.5;
+          }else{
+            bgm.volume = 0;
+          }
         }
       }
+      
     }
   };
 </script>

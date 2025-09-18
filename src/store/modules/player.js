@@ -105,6 +105,7 @@ async loadPlayer({ state, commit }) {
     });
   } catch (e) {
     console.error("プレイヤーデータ取得失敗:", e);
+    throw e;
   }
 },
 
