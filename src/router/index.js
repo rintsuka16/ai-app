@@ -30,12 +30,12 @@ const routes = [
         component: SignupView
 
   },
-  //   {
-  //   path: '/datalist',
-  //   name: 'datalist',
-  //       component: () => import(/* webpackChunkName: "about" */ '../views/DataView.vue')
+    {
+    path: '/dataview',
+    name: 'dataview',
+        component: () => import(/* webpackChunkName: "about" */ '../views/DataView.vue')
 
-  // },
+  },
 
 ]
 

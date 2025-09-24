@@ -101,7 +101,12 @@
           "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
         ],
         charImages_10: [
-          "https://i.gyazo.com/7e40daa9eea607ace654fa499c9a5581.png",
+          "https://i.gyazo.com/2a351b639cce77dcbf4613ebcb997d0f.png",
+          "https://i.gyazo.com/2a351b639cce77dcbf4613ebcb997d0f.png",
+          "https://i.gyazo.com/2a351b639cce77dcbf4613ebcb997d0f.png",
+          "https://i.gyazo.com/953ef7e82370d0c4cf7958013fb124f7.png",
+          "https://i.gyazo.com/953ef7e82370d0c4cf7958013fb124f7.png",
+          "https://i.gyazo.com/953ef7e82370d0c4cf7958013fb124f7.png",
         ],
         charImages_20: [
           "https://i.gyazo.com/3ff238758fb7cabf237a3640ae367669.png",
@@ -250,7 +255,7 @@
         const that = this;
         setInterval(function() {
           that.imageURL = (that.imageURL + 1) % 6;
-        }, 80);
+        }, 200);
       }
     };
 
@@ -259,7 +264,7 @@
 
 <style>
   .stat-message {
-    font-family: 'MisakiGothic', monospace;
+    font-family: 'MisakiGothic2nd', monospace;
     margin-top: 10px;
     color: yellow;
     font-weight: bold;
@@ -272,7 +277,7 @@
   }
 
   #ityped {
-    font-family: 'MisakiGothic', monospace;
+    font-family: 'MisakiGothic2nd', monospace;
     font-size: 16px;
     line-height: 1.6;
     color: white;
@@ -284,7 +289,7 @@
   }
 
   #app {
-    font-family: 'MisakiGothic', monospace;
+    font-family: 'MisakiGothic2nd', monospace;
     height: 100%;
     background-color: black;
   }
@@ -312,7 +317,7 @@
 }
 
 .character img {
-  width: 300px;
+  width: 200px;
   height: auto;
 }
 
@@ -330,7 +335,7 @@
   }
 
   .speaker {
-    font-family: 'MisakiGothic', monospace;
+    font-family: 'MisakiGothic2nd', monospace;
     border-bottom: solid white;
     color: white;
   }
@@ -346,7 +351,7 @@
   }
 
   .status-wrapper {
-    font-family: 'MisakiGothic', monospace;
+    font-family: 'MisakiGothic2nd', monospace;
     font-size: 12px;
     float: right;
     width: 200px;
