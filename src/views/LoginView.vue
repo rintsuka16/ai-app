@@ -1,9 +1,9 @@
 <template>
   <div class="login-wrapper">
     <div class="login-card">
-      <div class="login-title">ログイン</div>
+      <div class="login-title"></div>
 
-      <v-text-field dark v-model="userid" label="なまえ" outlined />
+      <v-text-field dark v-model="userid" label="ユーザーID" outlined />
       <v-text-field dark v-model="password" label="パスワード" type="password" outlined />
 
       <v-btn color="white" light block class="mt-4" @click="login">つづきから</v-btn>
@@ -50,10 +50,10 @@ async login() {
       console.log(response.data.result);
 
     if (response.data.result === "Succeeded") {
-      this.$store.commit("player/setUserId", this.userid);
-      console.log(this.userid);
-      await this.$store.dispatch("player/loadPlayer");
       console.log("aaa");
+      this.$store.commit("player/setUserId", this.userid);
+
+      await this.$store.dispatch("player/loadPlayer");
 
       this.$router.push("/aiview");
     } else {

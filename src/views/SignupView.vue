@@ -1,14 +1,13 @@
 <template>
   <div class="signup-wrapper">
     <div class="signup-card">
-      <div class="signup-title">ユーザー登録</div>
+      <div class="signup-title">とうろく</div>
 
-      <v-text-field v-model="userid" label="ユーザーID" outlined />
-      <v-text-field v-model="password" label="パスワード" type="password" outlined />
-      <v-text-field v-model="displayName" label="表示名" outlined />
+      <v-text-field dark v-model="userid" label="なまえ" outlined />
+      <v-text-field dark v-model="password" label="パスワード" type="password" outlined />
 
-      <v-btn color="primary" class="mt-4" block @click="signup">登録</v-btn>
-      <v-btn text class="mt-2" block @click="goToLogin">ログインに戻る</v-btn>
+      <v-btn color="white" class="mt-4" block @click="signup">セーブデータをつくる</v-btn>
+      <v-btn color="white" style="border:solid white 2px" text class="mt-4" block @click="goToLogin">つづきから</v-btn>
 
       <v-dialog v-model="dialog" max-width="400">
         <v-card>
@@ -31,7 +30,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </div>
+    </div> 
   </div>
 </template>
 
@@ -53,7 +52,7 @@ export default {
   },
   methods: {
 async signup() {
-  if (!this.userid || !this.password || !this.displayName) {
+  if (!this.userid || !this.password) {
     this.errorMessage = "全ての項目を入力してください。";
     this.dialog = true;
     return;
@@ -65,7 +64,7 @@ async signup() {
       {
         ID: this.userid,
         Password: this.password,
-        Name: this.displayName
+        Name: this.userid
       }
     );
 
@@ -107,10 +106,11 @@ goToLogin() {
 }
 
 .signup-card {
-  background-color: #fff;
+  background-color: black;
+  border: white solid;
   color: #333;
   padding: 32px;
-  border-radius: 12px;
+  border-radius: 8px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
   width: 100%;
   max-width: 420px;
@@ -121,6 +121,6 @@ goToLogin() {
   font-weight: bold;
   text-align: center;
   margin-bottom: 24px;
-  color: #165e83;
+  color: white;
 }
 </style>

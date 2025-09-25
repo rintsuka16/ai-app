@@ -23,6 +23,10 @@
           <td>すばやさ:</td>
           <td>{{ player.parameter3 }}</td>
         </tr>
+        <tr>
+          <td>すばやさ:</td>
+          <td>{{ player.parameter4 }}</td>
+        </tr>
       </table>
     </div>
 
@@ -58,7 +62,7 @@
             <v-textarea v-model="message" placeholder="メッセージを入力..." auto-grow rows="1" outlined hide-details rounded></v-textarea>
           </v-col>
           <v-col cols="2" class="pl-2">
-            <v-btn block class="mt-2" @click="sendMessage" :disabled="lastLine || typing">
+            <v-btn color="dark green" block class="mt-2" @click="sendMessage" :disabled="lastLine || typing">
               送信
             </v-btn>
           </v-col>
@@ -120,6 +124,15 @@
           "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
 
         ],
+        charImages_40: [
+          "https://i.gyazo.com/98ada2c0b6aebb3e448b68c0fe85116c.png",
+          "https://i.gyazo.com/9e8ddea5620600ece10d9e02c27ba4ba.png",
+          "https://i.gyazo.com/4cc6325713e327f87be71e61dfe9e2e5.png",
+          "https://i.gyazo.com/f060e5b78f97c2d511eeda761170f5d6.png",
+          "https://i.gyazo.com/2928c506f7c613c70d32eb1d8469fd1a.png",
+          "https://i.gyazo.com/020bdd6f54b4ffd3c24804ae3535f901.png"
+
+        ],
       };
     },
     computed: {
@@ -143,6 +156,8 @@
             return this.charImages_20;
           case 30:
             return this.charImages_30;
+          case 40:
+            return this.charImages_40;
           case 0:
           default:
             return this.charImages_0;
@@ -175,25 +190,37 @@
             }
           });
         },
-        async nextLine() {
-          if (this.pendingStatMessages && this.pendingStatMessages.length > 0) {
-            this.statMessage = this.pendingStatMessages.shift();
-            return;
-          }
-          if (this.lastLine) {
-            this.$store.commit("player/nextLine");
-            this.$nextTick(this.startTyping);
-          } else {
-            const event = this.player.currentEventId + 1;
-            this.$store.commit("player/setProgress", {
-              eventId: event,
-              seq: 0
-            });
-            await this.$store.dispatch("player/loadEvent");
-            this.$nextTick(this.startTyping);
-            this.statMessage = "";
-          }
-        },
+async nextLine() {
+  if (this.pendingStatMessages && this.pendingStatMessages.length > 0) {
+    this.statMessage = this.pendingStatMessages.shift();
+    return;
+  }
+
+  if (this.lastLine) {
+    this.$store.commit("player/nextLine");
+    this.$nextTick(this.startTyping);
+  } else {
+    const event = this.player.currentEventId + 1;
+    try {
+      this.$store.commit("player/setProgress", { eventId: event, seq: 0 });
+      await this.$store.dispatch("player/loadEvent");
+
+      if (!this.currentLine) {
+        this.$store.commit("player/setLines", [
+        { speaker: "せいさくしゃ", text: "=== THANK YOU FOR PLAYING ===" }
+        ]);
+      }
+
+      this.$nextTick(this.startTyping);
+      this.statMessage = "";
+    } catch (e) {
+      this.$store.commit("player/setLines", [
+        { speaker: "SYSTEM", text: "=== THE END ===" }
+      ]);
+      this.$nextTick(this.startTyping);
+    }
+  }
+},
         async sendMessage() {
           const trimmed = (this.message || "").trim();
           if (!trimmed) return;
@@ -223,17 +250,20 @@
               p1: this.player.parameter1,
               p2: this.player.parameter2,
               p3: this.player.parameter3,
+              p4: this.player.parameter4,
               exp: this.player.exp
             };
             this.$store.commit("player/addParams", {
-              p1: Number(parsed.Intelligence) || 0,
-              p2: Number(parsed.Vitality) || 0,
-              p3: Number(parsed.Empathy) || 0
+              p1: Number(parsed.Charisma) || 0,
+              p2: Number(parsed.Intuition) || 0,
+              p3: Number(parsed.Logic) || 0,
+              p4: Number(parsed.Order) || 0
             });
             let statLines = [];
             if (this.player.parameter1 - before.p1) statLines.push(`ちからが ${this.player.parameter1 - before.p1} 上がった！`);
             if (this.player.parameter2 - before.p2) statLines.push(`まもりが ${this.player.parameter2 - before.p2} 上がった！`);
             if (this.player.parameter3 - before.p3) statLines.push(`すばやさが ${this.player.parameter3 - before.p3} 上がった！`);
+            if (this.player.parameter4 - before.p4) statLines.push(`すばやさが ${this.player.parameter4 - before.p4} 上がった！`);
             if (this.player.exp - before.exp) statLines.push(`けいけんちが ${this.player.exp - before.exp} 増えた！`);
             this.pendingStatMessages = statLines;
           } catch (e) {
@@ -272,7 +302,7 @@
   }
 
   @font-face {
-    font-family: 'MisakiGothic';
+    font-family: 'MisakiGothic2nd';
     src: url('@/assets/fonts/misaki_gothic_2nd.ttf') format('truetype');
   }
 

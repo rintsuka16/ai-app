@@ -24,6 +24,7 @@ export default {
         { text: "ちから", value: "Parameter1" },
         { text: "まもり", value: "Parameter2" },
         { text: "すばやさ", value: "Parameter3" },
+        { text: "すばやさ", value: "Parameter4" },
         { text: "章", value: "CurrentEventId" },
       ],
     };

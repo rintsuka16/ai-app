@@ -10,6 +10,7 @@ export default {
     parameter1: 0,
     parameter2: 0,
     parameter3: 0,
+    parameter4: 0,
     currentEventId: 1,
     currentLine: 0,
     lines: []
@@ -32,7 +33,8 @@ export default {
         exp: state.exp,
         p1: state.parameter1,
         p2: state.parameter2,
-        p3: state.parameter3
+        p3: state.parameter3,
+        p4: state.parameter4
       };
     }
   },
@@ -45,6 +47,7 @@ export default {
     state.parameter1 = item.parameter1;
     state.parameter2 = item.parameter2;
     state.parameter3 = item.parameter3;
+    state.parameter4 = item.parameter4;
     state.currentEventId = item.currentEventId;
     state.currentSeq = item.currentSeq;
     console.log(state);
@@ -60,18 +63,24 @@ export default {
       if (state.currentLine < state.lines.length) { state.currentLine++; }
     },
     addParams(state, item) {
-      const p1 = item.p1 || 0, p2 = item.p2 || 0, p3 = item.p3 || 0;
-      state.parameter1 += p1; state.parameter2 += p2; state.parameter3 += p3;
-      state.exp += p1 + p2 + p3;
+      const p1 = item.p1 || 0, p2 = item.p2 || 0, p3 = item.p3 || 0, p4 = item.p4 || 0;
+      state.parameter1 += p1; state.parameter2 += p2; state.parameter3 += p3; state.parameter4 += p4;
+      state.exp += p1 + p2 + p3 + p4;
        if (state.exp >= 1000) {
       let maxParam = Math.max(state.parameter1, state.parameter2, state.parameter3);
       if (maxParam === state.parameter1) {
         state.charId = 10; 
       } else if (maxParam === state.parameter2) {
         state.charId = 20; 
-      } else {
+      } else if (maxParam === state.parameter3) {
         state.charId = 30; 
+      } else {
+        state.charId = 40; 
       }
+         state.lines.push({
+      speaker: "SYSTEM",
+      text: `なんと、${state.userId}は進化した！`
+    });
     }
     },
     setProgress(state, item) {
@@ -100,6 +109,7 @@ async loadPlayer({ state, commit }) {
       parameter1: playerData.Parameter1,
       parameter2: playerData.Parameter2,
       parameter3: playerData.Parameter3,
+      parameter4: playerData.Parameter4,
       currentEventId: playerData.CurrentEventId ?? 1,
       currentLine: playerData.CurrentSeq ?? 0
     });
@@ -147,6 +157,7 @@ async loadPlayer({ state, commit }) {
         Parameter1: state.parameter1,
         Parameter2: state.parameter2,
         Parameter3: state.parameter3,
+        Parameter4: state.parameter4,
         CurrentEventId: state.currentEventId,
         CurrentSeq: state.currentLine
       });
