@@ -27,7 +27,7 @@
     name: 'App',
     data() {
       return {
-        bgmUrl: "https://www.woodus.com/den/gallery/graphics/dq3snes/mp3/34%20Dragon%20Quest%203%20-%20Unknown%20World.mp3"
+        bgmUrl: "https://www.music-note.jp/bgm/mp3/village.mp3"
       };
     },
     computed: {
@@ -53,7 +53,7 @@
         if (bgm) {
           await bgm.play();
           if (bgm.volume == 0 || bgm.volume == 1){
-            bgm.volume = 0.5;
+            bgm.volume = 0.1;
           }else{
             bgm.volume = 0;
           }
