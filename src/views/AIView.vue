@@ -108,7 +108,7 @@
         ],
         //ちから豚
         charImages_10: [
-          "https://i.gyazo.com/dadffc4b5cfd409a362744f9a2afa5ac.png",
+          "https://i.gyazo.com/65e1361201b3610f69e242d78437a6c8.png",
           "https://i.gyazo.com/65e1361201b3610f69e242d78437a6c8.png",
           "https://i.gyazo.com/65e1361201b3610f69e242d78437a6c8.png",
           "https://i.gyazo.com/20d4230676a88664509a4621426a48d3.png",
